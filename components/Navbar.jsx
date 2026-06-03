@@ -1,10 +1,25 @@
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
-const Navbar = () => {
+export default async function Navbar() {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("token")?.value;
+
+  let admin = null;
+
+  if (token) {
+    try {
+      admin = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+    } catch (error) {}
+  }
+
+  return (
     
-
-    return (
-    // <nav className="w-full border-b border-gray-200">
-      <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
+       <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
         {/* Logo */}
@@ -38,6 +53,18 @@ const Navbar = () => {
             <a href="#contact">Contact</a>
             
           </li>
+          {admin ? (
+        <>
+           <li className="cursor-pointer hover:text-gray-500 transition">
+            <a href="#">Logout</a>
+            
+          </li>
+        </>
+      ) : (
+        <li className="cursor-pointer hover:text-gray-500 transition">
+            <a href="/admin/login">Login</a>
+          </li>
+      )}
         </ul>
 
         {/* Resume Button */}
@@ -46,8 +73,8 @@ const Navbar = () => {
         </button>
 
       </div>
+    
+      
     </nav>
   );
 }
-
-export default Navbar;
