@@ -13,6 +13,8 @@ const addProject = () => {
         link:"",
     })
 
+    const [message, setMessage] = useState("")
+
     const handleChange = (e) => {
         const {name, value} = e.target
         setFormData({
@@ -30,6 +32,7 @@ const addProject = () => {
             },
             body: JSON.stringify(formData)
         })
+        setMessage(res?.message)
 
     }
 
