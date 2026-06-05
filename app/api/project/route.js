@@ -24,11 +24,7 @@ export async function POST(req) {
         await Project.create({
             title,
             desc,
-            $addtoSet:{
-                tech:{
-                    $each:techs
-                }
-            },
+            tech: techs,
             repo,
             link
         })
