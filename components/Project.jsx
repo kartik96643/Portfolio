@@ -1,6 +1,29 @@
-import { projects } from "@/data/projects";
+// import { projects } from "@/data/projects";
+"use client";
+
+import { useEffect, useState } from "react";
 
 export default function Projects() {
+
+  const [data, setData] = useState([])
+
+  const getProject = async() => {
+    try {
+      const res = await fetch('/api/project',{
+        method:"GET"
+      })
+      const ress = await res.json()
+      if(ress.success){
+        setData(ress.projects)
+      }
+    } catch (error) {
+      console.log(error, "Error")
+    }
+  }
+
+  useEffect(() => {
+    getProject()
+  },[])
   return (
     <section
       id="projects"
@@ -24,9 +47,9 @@ export default function Projects() {
         {/* Projects Grid */}
         <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-          {projects.map((project, index) => (
+          {(data && data.length > 0) ? data.map((project, index) => (
             <div
-              key={index}
+              key={project._id}
               className=" border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition"
             >
 
@@ -43,7 +66,7 @@ export default function Projects() {
                 </h3>
 
                 <p className="text-gray-600 mt-4 leading-7">
-                  {project.description}
+                  {project.desc}
                 </p>
 
                 {/* Tech Stack */}
@@ -64,11 +87,11 @@ export default function Projects() {
                 <div className="flex gap-4 mt-8">
 
                   <button className="border border-black px-5 py-2 rounded-lg hover:bg-black hover:text-white transition">
-                    GitHub
+                    <a href={project.repo} target="_blank">Github</a>
                   </button>
 
                   <button className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition">
-                    Live Demo
+                    <a href={project.link} target="_blank">Live Demo</a>
                   </button>
 
                 </div>
@@ -76,7 +99,9 @@ export default function Projects() {
               </div>
 
             </div>
-          ))}
+          )) : <>
+          <h2>No Projects Added </h2>
+          </>}
 
         </div>
 
