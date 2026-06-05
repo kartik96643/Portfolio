@@ -24,6 +24,14 @@ export default function Projects() {
   useEffect(() => {
     getProject()
   },[])
+
+  const handleDeleteClick = async(id) => {
+     await fetch(`/api/project/:${id}`,{
+      method:"DELETE"
+    })
+  }
+
+
   return (
     <section
       id="projects"
@@ -97,6 +105,7 @@ export default function Projects() {
                 </div>
 
               </div>
+              <button onClick={() => handleDeleteClick(project._id)}>Delete</button>
 
             </div>
           )) : <>
