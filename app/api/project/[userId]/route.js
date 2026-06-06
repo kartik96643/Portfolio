@@ -3,10 +3,10 @@ import Project from "@/models/project";
 export async function DELETE(props,req) {
 
     try {
-        // console.log( await props.params)
+        console.log( await props.params)
 
         const userId = await req.params
-        // console.log(userId.userId)
+        console.log(userId.userId)
         await Project.findByIdAndDelete({_id:userId.userId.slice(1)})
         return Response.json({
             success:true,
