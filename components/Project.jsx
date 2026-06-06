@@ -21,16 +21,18 @@ export default function Projects() {
     }
   }
 
+  
+  const handleDeleteClick = async(id) => {
+    const res = await fetch(`/api/project/:${id}`,{
+      method:"DELETE"
+    })
+    const ress = await res.json()
+    console.log(ress.message)
+  }
+  
   useEffect(() => {
     getProject()
   },[])
-
-  const handleDeleteClick = async(id) => {
-     await fetch(`/api/project/:${id}`,{
-      method:"DELETE"
-    })
-  }
-
 
   return (
     <section
