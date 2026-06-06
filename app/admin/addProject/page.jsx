@@ -51,7 +51,6 @@ const addProject = () => {
 
     return (
         <>
-            <h4>{message && message}</h4>
 
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Project Title</label>
