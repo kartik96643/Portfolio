@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import Logout from "./Logout";
 
 export default async function Navbar() {
   const cookieStore = await cookies();
 
   const token = cookieStore.get("token")?.value;
-
+  
   let admin = null;
 
   if (token) {
@@ -56,7 +57,7 @@ export default async function Navbar() {
           {admin ? (
         <>
            <li className="cursor-pointer hover:text-gray-500 transition">
-            <a href="#">Logout</a>
+           <Logout/>
             
           </li>
         </>
