@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 export default function Projects() {
 
   const [data, setData] = useState([])
+  const [admin, setAdmin] = useState()
 
   const getProject = async() => {
     try {
@@ -21,8 +22,27 @@ export default function Projects() {
     }
   }
 
+  const getAdmin = async() => {
+    try {
+      const res = await fetch('/api/auth/me',{
+        method:"GET"
+      })
+      const ress = await res.json()
+      console.log("getadmin", ress)
+      if(ress.success){
+        setAdmin(ress.admin)
+      }
+    } catch (error) {
+      console.log("Error",error)
+    }
+  }
+
   
   const handleDeleteClick = async(id) => {
+    const ans = confirm("Are you sure you want to delete this project?")
+    if(!ans){
+      return
+    }
     const res = await fetch(`/api/project/:${id}`,{
       method:"DELETE"
     })
@@ -32,6 +52,7 @@ export default function Projects() {
   
   useEffect(() => {
     getProject()
+    getAdmin()
   },[])
 
   return (
@@ -104,10 +125,12 @@ export default function Projects() {
                     <a href={project.link} target="_blank">Live Demo</a>
                   </button>
 
+              {admin && <>
+              <button onClick={() => handleDeleteClick(project._id)} className="bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition">Delete</button>
+              </>}
                 </div>
 
               </div>
-              <button onClick={() => handleDeleteClick(project._id)}>Delete</button>
 
             </div>
           )) : <>
